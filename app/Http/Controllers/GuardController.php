@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 
 use App\Models\Guard;
 use Illuminate\Http\Request;
+use Flasher\Prime\FlasherInterface;
 
 class GuardController extends Controller
 {
@@ -31,7 +32,8 @@ class GuardController extends Controller
             'contact_no' => $request->contact_no
         ]);
 
-        return redirect()->route('guards.index')->with('message', 'Guard Created Successfully!');
+        flash()->success('Guard Created Successfully!');
+        return redirect()->route('guards.index');
     }
 
     public function edit(int $id){
@@ -56,13 +58,15 @@ class GuardController extends Controller
             'contact_no' => $request->contact_no
         ]);
 
-        return redirect()->route('guards.index')->with('message', 'Guard Updated Successfully!');
+        flash()->success('Guard Updated Successfully!');
+        return redirect()->route('guards.index');
     }
 
-    public function destroy(int $id){
+    public function destroy(FlasherInterface $flasher, int $id){
         $guard = Guard::findOrFail($id);
         $guard->delete();
 
-        return redirect()->back()->with('message', 'Guard Deleted Successfully!');
+        flash()->success('Guard Deleted Successfully!');
+        return redirect()->back();
     }
 }
